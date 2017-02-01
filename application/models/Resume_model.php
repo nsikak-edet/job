@@ -110,6 +110,22 @@ class Resume_model extends CI_Model
     }
 
     /**
+     * @return null
+     */
+    public function get_employees(){
+        $this->db->select("*");
+        $this->db->from($this::TABLE_NAME);
+        $this->db->join('apps_countries','apps_countries.id=resume.country');
+        $this->db->join('users','users.id=resume.user_id');
+        $this->db->where('user_group',EMPLOYEE_GROUP);
+
+        $query = $this->db->get();
+        $result = $query->result();
+
+        return (empty($result)) ? null : $result;
+    }
+
+    /**
      * @param $user_id
      * @return null
      */
@@ -138,5 +154,27 @@ class Resume_model extends CI_Model
         $result = $query->result();
 
         return (empty($result)) ? null : $result;
+    }
+
+    /***
+     * @param $user_id
+     */
+    public function delete_employee($user_id){
+
+        //delete user resume
+        $this->db->where('user_id',$user_id);
+        $this->db->delete($this::TABLE_NAME);
+
+        //delete education
+        $this->db->where('user_id',$user_id);
+        $this->db->delete($this::EDU_TABLE_NAME);
+
+        //delete experience
+        $this->db->where('user_id',$user_id);
+        $this->db->delete($this::EX_TABLE_NAME);
+
+        //delete experience
+        $this->db->where('id',$user_id);
+        $this->db->delete('users');
     }
 }

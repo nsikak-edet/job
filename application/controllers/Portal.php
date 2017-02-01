@@ -38,12 +38,18 @@ class Portal extends CI_Controller {
 			$this->job_application_model->job_id = $job_id;
 			$this->job_application_model->date_applied = date('Y-m-d H:i:s');
 
+
+
 			//fetch job with associated id if found in database
 			$job = $this->job_model->get_job_by_id($job_id);
 			$user_application_in_db = $this->job_application_model->get_job_by_application_index($user->id,$job_id);
 			if($job != null)
 			{
-				if($user_application_in_db != null){
+				//check if user has a complete profile. For incomplete profile deny alert user of error
+				if($this->complete_profile() == false){
+					$data['msg'] = "Sorry! You can't apply. Please complete your profile";
+				}
+				else if($user_application_in_db != null){
 					$data['msg'] = "You've already applied for this job.";
 				}else{
 					$this->job_application_model->save();
@@ -51,7 +57,6 @@ class Portal extends CI_Controller {
 					$data['msg'] = "Your application is successfully submitted ";
 
 				}
-				$this->template->load("board_default","body/apply_job_success",@$data);
 
 
 			}else{
@@ -61,12 +66,15 @@ class Portal extends CI_Controller {
 				redirect(base_url());
 			}
 
+			$this->template->load("board_default","body/apply_job_success",@$data);
+
 		}else{
 			/**
 			 * Redirect user --> invalid use for this function
 			 */
 			redirect(base_url());
 		}
+
 	}
 
 	public function job($job_id=0){
@@ -105,12 +113,64 @@ class Portal extends CI_Controller {
 		$data['pagination'] = $pagination->create_links();
 		$data['total_search_result'] = $total_result;
 
+		$data['search_url'] = 'portal/search';
+
 		//get search results
 		$offset = ($this->uri->segment(3) != '' ? intval($this->uri->segment(3)) : 0);
 		$search_result = $this->job_model->get_search_jobs($job_title,$job_location,$job_category,PAGINATION_PER_PAGE,$offset);
 		$data['search_result'] = $search_result;
 
 		$this->template->load("board_search","body/search_result",@$data);
+	}
+
+	/***
+	 * Check if profile is complete
+	 */
+	private function complete_profile(){
+		$this->load->model('resume_model');
+		$user = $this->session->userdata('user');
+		$profile_details = $this->resume_model->get_resume_details_by_user_id($user->id);
+		$profile_education = $this->resume_model->get_resume_edu_by_user_id($user->id);
+		$profile_experience = $this->resume_model->get_experience_by_id($user->id);
+
+		return ($profile_details != null && ($profile_education != null) && ($profile_experience != null)) ? true : false;
+
+	}
+
+	/***
+	 * Activate/deactivate job - ADMIN function
+	 * @param $user_id
+	 */
+	public function activate($user_id){
+		$this->load->model('job_model');
+		$activate = $this->input->get('a',TRUE);
+
+		if($activate != null && intval($activate) == 1){
+			$data = array('is_active'=>1);
+		}else{
+			$data = array('is_active'=>0);
+		}
+		$this->job_model->update($user_id,$data);
+		$this->load->library('user_agent');
+
+		$url = 'admin/jobs';
+		if ($this->agent->is_referral())
+		{
+			$url = $this->agent->referrer();
+		}
+		redirect($url);
+	}
+
+	/***
+	 * Delete job advert from database and associating applications
+	 * @param $job_id
+	 */
+	public function del($job_id){
+		$this->load->model('job_model');
+		$this->job_model->delete($job_id);
+
+		redirect('admin/jobs');
+
 	}
 
 }

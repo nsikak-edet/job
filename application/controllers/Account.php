@@ -125,7 +125,16 @@ class Account extends CI_Controller {
 					}
 					break;
 
-				case 3:
+				case ADMIN_GROUP:
+					if($flash_username != null){
+						redirect("employee");
+					}else{
+						$errorJSON = json_encode(array(
+							'status' => 'SUCCESS',
+							'redirect_url' => base_url() . "admin"
+						));
+						outputJSON($errorJSON);
+					}
 					break;
 			}
 		}

@@ -58,5 +58,29 @@ class User_model extends CI_Model
         return $result;
     }
 
+    /***
+     * @param $user_id
+     */
+    public function delete($user_id){
+        $this->db->where('id',$user_id);
+        $this->db->delete($this::TABLE_NAME);
+    }
+
+    public function get_employees($user_id){
+        $this->db->select("*,users.id as id");
+        $this->db->from($this::TABLE_NAME);
+        $this->db->join("users","recruiters.user_id=users.id");
+        $this->db->join("company_types","recruiters.company_type=company_types.id");
+        $this->db->where('user_group',RECRUITER_GROUP);
+        $query = $this->db->get();
+        $result = $query->result();
+
+        if(empty($result))
+            return null;
+        else
+            return $result;
+
+    }
+
 
 }

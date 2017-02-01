@@ -99,7 +99,10 @@ class Template
                     return $data;
                     break;
 
-                case 3:
+                case ADMIN_GROUP:
+                    $data['menu'] = $this->ci->load->view('components/admin_menu.php',$data,TRUE);
+                    $data['mobile_menu'] = $this->ci->load->view('components/r_mobile_menu.php',$data,TRUE);
+                    return $data;
                     break;
             }
         }

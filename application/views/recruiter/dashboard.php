@@ -32,7 +32,7 @@
                               class="pull-left block mtb-15"><?php echo date('d-m-Y', strtotime($job->date_created)) ?>
                           </span>
                                 <div class="fix pl-30 mt-10">
-                                    <h5><a href="#"><?php echo $job->title ?></a></h5>
+                                    <h5><a href="<?php echo base_url() ?>portal/job/<?php echo $job->id ?>"><?php echo $job->title ?></a></h5>
                                 </div>
                             </div>
                             <div class="address col-3 pl-100">
@@ -43,8 +43,8 @@
                             <div class="keyword col-4 pl-20 pt-7">
                                 <a href="<?php echo base_url() ?>recruiter/edit_job/<?php echo $job->id; ?>"
                                    class="btn btn-default btn-sm text-info mr-10"><i class="fa fa-edit text-left"></i> Edit</a>
-                                <a href="#" class="btn btn-default btn-sm text-info mr-10"> <i class="fa fa-eye text-left"></i> Preview</a>
-                                <a href="#" class="btn btn-default btn-sm text-info"><i class="fa fa-users text-left"></i> Candidates</a>
+                                <a href="<?php echo base_url() ?>portal/job/<?php echo $job->id ?>" class="btn btn-default btn-sm text-info mr-10"> <i class="fa fa-eye text-left"></i> Preview</a>
+                                <a href="<?php echo base_url() ?>recruiter/candidates/<?php echo $job->id ?>" class="btn btn-default btn-sm text-info"><i class="fa fa-users text-left"></i> Candidates</a>
                             </div>
                         </div>
 

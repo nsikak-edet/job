@@ -15,14 +15,28 @@ class Recruiter extends CI_Controller{
      * Recruiters dashboard
      */
     public function index(){
+        $user_id = $this->input->get('uid',TRUE);
+
+
         $data['page_title'] = "Recruiter";
         $data['sub_page_title'] = "Dashboard";
 
         $user = $this->session->userdata('user');
         $this->load->model("job_model");
 
-        $data['jobs'] = $this->job_model->get_jobs_by_user_id($user->id);
+        $user_id = ($user_id != null) ? intval($user_id) : $user->id;
+
+        $data['jobs'] = $this->job_model->get_jobs_by_user_id($user_id);
         $this->template->load("board_default","recruiter/dashboard",$data);
+    }
+
+    public function candidates($job_id=0){
+        $data['page_title'] = "Recruiter";
+        $data['sub_page_title'] = "candidates";
+
+        $this->load->model('job_application_model');
+        $data['candidates'] = $this->job_application_model->get_applications_by_jobid($job_id);
+        $this->template->load("board_default","recruiter/candidates_list",$data);
     }
 
     /***
@@ -126,17 +140,18 @@ class Recruiter extends CI_Controller{
     /*****
      *View recruiter's details
      */
-    public function profile(){
+    public function profile($user_id=0){
         $data['page_title'] = "Recruiter";
         $data['sub_page_title'] = "Profile";
 
         $user = $this->session->userdata('user');
+        $user_id = ($user_id > 0) ? $user_id : $user->id;
         if($user != null){
             $this->load->model('recruiter_model');
-            $recruiter = $this->recruiter_model->get_recruiter_by_user_id($user->id);
+            $recruiter = $this->recruiter_model->get_recruiter_by_user_id($user_id);
             $data['recruiter_data'] = $recruiter;
-
         }
+
         $this->template->load("board_default","recruiter/profile",$data);
     }
 
@@ -303,6 +318,7 @@ class Recruiter extends CI_Controller{
      * Edit job adverts
      */
     public function edit_job($job_id){
+
         $data['page_title'] = "Recruiter";
         $data['sub_page_title'] = "Edit job";
 
@@ -332,7 +348,7 @@ class Recruiter extends CI_Controller{
         $new_job_advert = $this->input->post('edit_job',TRUE);
 
         //process job edit
-        if($new_job_advert != null && ($data['job'] != null) && ($user->id == $data['job']->user_id)){
+        if($new_job_advert != null && ($data['job'] != null) && ($user->id == $data['job']->user_id || $user->user_group == ADMIN_GROUP)){
             $this->load->library("services/recruiter_service");
             $valid_job_data = $this->recruiter_service->validate_job();
 
@@ -399,9 +415,36 @@ class Recruiter extends CI_Controller{
     }
 
     /***
-     * Listing of advertised jobs
+     * Activate recruiter - ADMIN function
+     * @param $user_id
      */
-    public function jobs(){
+    public function activate($user_id){
+        $this->load->model('user_model');
+        $activate = $this->input->get('a',TRUE);
+
+        if($activate != null && intval($activate) == 1){
+            $data = array('is_active'=>1);
+        }else{
+            $data = array('is_active'=>0);
+        }
+        $this->user_model->update($data,$user_id);
+        redirect('admin/recruiters');
+    }
+
+    /***
+     * Delete recruiter from database
+     *
+     * @param $user_id
+     */
+    public function del($user_id){
+        $this->load->model('recruiter_model');
+        $this->load->model('job_model');
+        $this->load->model('user_model');
+        $jobs = $this->job_model->get_jobs_by_user_id($user_id);
+        if($jobs == null){
+            $this->user_model->delete($user_id);
+        }
+        redirect('admin/recruiters');
 
     }
 }

@@ -49,4 +49,31 @@ class Job_application_model extends CI_Model
 
         return (empty($result)) ? null : $result[0];
     }
+
+    public function get_applications($user_id){
+        $this->db->select("*");
+        $this->db->from($this::TABLE_NAME);
+        $this->db->join('users','job_application.user_id=users.id');
+        $this->db->join('jobs','jobs.id=job_application.job_id');
+        $this->db->where('job_application.user_id',$user_id);
+
+        $query = $this->db->get();
+        $result = $query->result();
+
+        return (empty($result)) ? null : $result;
+    }
+
+    public function get_applications_by_jobid($job_id){
+        $this->db->select("*,job_application.user_id as user_id,users.id as id");
+        $this->db->from($this::TABLE_NAME);
+        $this->db->join('jobs','jobs.id=job_application.job_id');
+        $this->db->join('users','job_application.user_id=users.id');
+        $this->db->join('resume','users.id=resume.user_id');
+        $this->db->where('job_application.job_id',$job_id);
+
+        $query = $this->db->get();
+        $result = $query->result();
+
+        return (empty($result)) ? null : $result;
+    }
 }

@@ -88,7 +88,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-xs-12">
-                        <div class="logo"><a href="index.html"><img src="<?php echo getAssetsURL() ?>images/logo/logo.png" alt="JobHelp"></a></div>
+                        <div class="logo"><a href="<?php echo base_url(); ?>"><img src="<?php echo getAssetsURL() ?>images/logo/logo.png" alt="JobHelp"></a></div>
                     </div>
 
                     <!-- MENU SECTION --->
@@ -110,7 +110,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="<?php echo base_url() ?>portal/search" method="get">
+                        <form action="<?php echo base_url() ?><? echo @$search_url; ?>" method="get">
                             <div class="form-container fix bg-opacity-blue-85 mt-125">
                                 <div class="box-select">
                                     <div class="select large">
@@ -176,7 +176,7 @@
                 <div class="modal-body">
                     <div class="form-pop-up-content ptb-60 pl-60 pr-60">
                         <div class="area-title text-center mb-43">
-                            <h2 class="pt-7 pb-7 pl-40 pr-40">Login</h2>
+                            <h4 class="pt-7 pb-7 pl-40 pr-40">Loginsss</h4>
                         </div>
                         <form method="post" action="<?php echo base_url() ?>account/login" id="loginForm">
                             <div class="form-box">
@@ -200,47 +200,6 @@
     </div>
 </div>
 <!--End of Login Form-->
-
-<!--Start of Register Form-->
-<div id="quickview-register">
-    <!-- Modal -->
-    <div class="modal fade" id="register" tabindex="-1" role="dialog">
-        <div class="modal-dialog register" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="zmdi zmdi-close"></i></span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-pop-up-content ptb-60 pl-60 pr-60">
-                        <div class="area-title text-center mb-43">
-                            <h2 class="pt-7 pb-7 pl-40 pr-40">Sign Up</h2>
-                        </div>
-                        <form method="post" action="#">
-                            <div class="form-box">
-                                <input type="text" name="fullname" placeholder="Full Name" class="mb-14">
-                                <input type="text" name="username" placeholder="User Name" class="mb-14">
-                                <input type="email" name="email" placeholder="Email" class="mb-14">
-                                <input type="password" name="pass" placeholder="Password" class="mb-14">
-                                <input type="password" name="re_pass" placeholder="Confirm Password">
-                            </div>
-                            <div class="fix ptb-30">
-										<span class="remember">
-											<input class="p-0 pull-left" type="checkbox">
-											<span class="fix block">There are many variations of passages of Lorem Ipsum available</span> 
-										</span>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="text-uppercase">Register</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--End of Register Form-->
-
 
 <!-- jquery latest version
 ========================================================= -->

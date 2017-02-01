@@ -30,18 +30,65 @@ class Employee extends CI_Controller
     /***
      * View employee resume
      */
-    public function view(){
+    public function view($user_id = 0){
+
         $data['page_title'] = "Employee";
         $data['sub_page_title'] = "Dashboard";
 
         $user = $this->session->userdata('user');
         $this->load->model("resume_model");
 
-        $data['employee_details'] = $this->resume_model->get_details_by_id($user->id);
-        $data['employee_education'] = $this->resume_model->get_education_by_id($user->id);
-        $data['employee_experience'] = $this->resume_model->get_experience_by_id($user->id);
+        $user_id = ($user_id == 0) ? $user->id : $user_id;
+        $data['employee_details'] = $this->resume_model->get_details_by_id($user_id);
+        $data['employee_education'] = $this->resume_model->get_education_by_id($user_id);
+        $data['employee_experience'] = $this->resume_model->get_experience_by_id($user_id);
         $this->template->load("board_default","employee/resume_view",$data);
     }
+
+    public function applications(){
+        $data['page_title'] = "Employee";
+        $data['sub_page_title'] = "Applications";
+        $user = $this->session->userdata('user');
+
+        //load models
+        $this->load->model('job_application_model');
+        $data['applications'] = $this->job_application_model->get_applications($user->id);
+        $this->template->load("board_default","employee/app_list",@$data);
+    }
+
+    /***
+     * @param $user_id
+     */
+    public function del($user_id){
+        $this->load->model('resume_model');
+        $this->load->model('job_application_model');
+        $this->load->model('user_model');
+        $jobs = $this->job_application_model->get_applications($user_id);
+
+        if($jobs == null){
+            $this->user_model->delete_employee($user_id);
+        }
+
+        redirect('admin/employees');
+    }
+
+    /***
+     * Activate employee - ADMIN function
+     * @param $user_id
+     */
+    public function activate($user_id){
+        $this->load->model('user_model');
+        $activate = $this->input->get('a',TRUE);
+
+        if($activate != null && intval($activate) == 1){
+            $data = array('is_active'=>1);
+        }else{
+            $data = array('is_active'=>0);
+        }
+        $this->user_model->update($data,$user_id);
+        redirect('admin/employees');
+    }
+
     /***
      * Register new employee request handler
      */

@@ -96,3 +96,37 @@ function paginate($total,$per_page,$url){
 
     return $ci->pagination;
 }
+
+function get_permission($group){
+    switch($group){
+        /***
+         * A -> Admin permission
+         * E -> Employee permission
+         * R -> Recruiter permission
+         */
+        case 'A':
+            return array(ADMIN_GROUP);
+        break;
+
+        case 'AR':
+            return array(ADMIN_GROUP,RECRUITER_GROUP);
+        break;
+
+        case 'AE':
+            return array(ADMIN_GROUP,EMPLOYEE_GROUP);
+        break;
+
+        case 'AER':
+            return array(ADMIN_GROUP,EMPLOYEE_GROUP,RECRUITER_GROUP);
+        break;
+
+        case 'R':
+            return array(RECRUITER_GROUP);
+        break;
+
+        case 'E':
+            return array(EMPLOYEE_GROUP);
+        break;
+
+    }
+}

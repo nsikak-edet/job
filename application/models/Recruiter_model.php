@@ -76,4 +76,23 @@ class Recruiter_model extends CI_Model
 
     }
 
+    /****
+     * Get all recruiters
+     * @return null
+     */
+    public function get_recruiters(){
+        $this->db->select("*,users.id as id");
+        $this->db->from($this::TABLE_NAME);
+        $this->db->join("users","recruiters.user_id=users.id");
+        $this->db->join("company_types","recruiters.company_type=company_types.id");
+        $this->db->where('user_group',RECRUITER_GROUP);
+        $query = $this->db->get();
+        $result = $query->result();
+
+        if(empty($result))
+            return null;
+        else
+            return $result;
+    }
+
 }

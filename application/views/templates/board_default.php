@@ -88,7 +88,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-xs-12">
-                        <div class="logo"><a href="index.html"><img src="<?php echo getAssetsURL() ?>images/logo/logo.png" alt="JobHelp"></a></div>
+                        <div class="logo"><a href="<?php echo base_url(); ?>"><img src="<?php echo getAssetsURL() ?>images/logo/logo.png" alt="JobHelp"></a></div>
                     </div>
 
                     <!-- MENU SECTION --->
@@ -151,7 +151,7 @@
                 <div class="modal-body">
                     <div class="form-pop-up-content ptb-60 pl-60 pr-60">
                         <div class="area-title text-center mb-43">
-                            <h2 class="pt-7 pb-7 pl-40 pr-40">Login</h2>
+                            <h6 class="pt-7 pb-7 pl-40 pr-40">Login</h6>
                         </div>
                         <form method="post" action="<?php echo base_url() ?>account/login" id="loginForm">
                             <div class="form-box">
@@ -175,47 +175,6 @@
     </div>
 </div>
 <!--End of Login Form-->
-
-<!--Start of Register Form-->
-<div id="quickview-register">
-    <!-- Modal -->
-    <div class="modal fade" id="register" tabindex="-1" role="dialog">
-        <div class="modal-dialog register" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="zmdi zmdi-close"></i></span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-pop-up-content ptb-60 pl-60 pr-60">
-                        <div class="area-title text-center mb-43">
-                            <h2 class="pt-7 pb-7 pl-40 pr-40">Sign Up</h2>
-                        </div>
-                        <form method="post" action="#">
-                            <div class="form-box">
-                                <input type="text" name="fullname" placeholder="Full Name" class="mb-14">
-                                <input type="text" name="username" placeholder="User Name" class="mb-14">
-                                <input type="email" name="email" placeholder="Email" class="mb-14">
-                                <input type="password" name="pass" placeholder="Password" class="mb-14">
-                                <input type="password" name="re_pass" placeholder="Confirm Password">
-                            </div>
-                            <div class="fix ptb-30">
-										<span class="remember">
-											<input class="p-0 pull-left" type="checkbox">
-											<span class="fix block">There are many variations of passages of Lorem Ipsum available</span> 
-										</span>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="text-uppercase">Register</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--End of Register Form-->
-
 
 <!-- jquery latest version
 ========================================================= -->
@@ -275,243 +234,8 @@
 <!--- angular js ---->
 <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function(){
+<!--- custom js ---->
+<script src = "<?php echo getAssetsURL() ?>js/customjs/custom.js"></script>
 
-        $('#loginForm').submit(function(e){
-            var formData = $('#loginForm').serialize();
-            var formURL = $('#loginForm').attr('action');
-
-            //clear errors
-            $('.username_error').html('');
-            $('.pass_error').html('');
-
-            //ajax process of form login
-            $.ajax({
-                type: "POST",
-                url: formURL,
-                data: formData,
-                beforeSend: function(){
-                    $('#login').html('processing...');
-                },
-                success: function(data){
-                    if(data.status == 'FAIL'){
-                        $('.username_error').html(data.username);
-                        $('.pass_error').html(data.pass);
-
-                    }else if(data.status == 'SUCCESS'){
-                        //redirect user on successful login
-                        window.location = data.redirect_url;
-                    }
-                    $('#login').html('Login');
-                },
-                error:function(data){
-                    $('.username_error').html('error occured!');
-                    $('#login').html('Login');
-                }
-            });
-
-            e.preventDefault();
-        });
-
-        //activate summernote
-        var summernote = $('.summernote').summernote({
-            height: 150,                 // set editor height
-            minHeight: null,             // set minimum height of editor
-            maxHeight: null,
-            toolbar: [
-                ['edit',['undo','redo']],
-                ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript']],
-                ['para', ['ul', 'ol']]
-            ]
-        });
-
-        tinymce.init({
-            selector: '.tinymcetext',
-            toolbar: 'undo redo | bold italic | underline | bullist | subscript | superscript',
-            plugins: 'lists advlist',
-            height : 300,
-            menubar : false,
-            setup: function (editor) {
-                editor.on('change', function () {
-                    editor.save();
-                });
-            }
-        });
-
-        tinymce.init({
-            selector: '.tinymcetext_small',
-            toolbar: 'undo redo | bold italic | underline | bullist | subscript | superscript',
-            plugins: 'lists advlist',
-            height : 180,
-            menubar : false,
-            setup: function (editor) {
-                editor.on('change', function () {
-                    editor.save();
-                });
-            }
-        });
-
-        $('#newAdvertForm').submit(function(e){
-            var formData = $('#newAdvertForm').serialize();
-            var formURL = $('#newAdvertForm').attr('action');
-
-            //clear errors from view
-            $('.error').html('');
-
-            //ajax process of form login
-            $.ajax({
-                type: "POST",
-                url: formURL,
-                data: formData,
-                beforeSend: function(){
-//                    $('#login').html('processing...');
-                },
-                success: function(data){
-                    if(data.status == 'FAIL'){
-                        $.each(data.errors,function(key,value){
-                            $('.'+value.key+'_error').html(value.data);
-                        });
-                    }else if(data.status == 'SUCCESS'){
-                        //redirect user on successful login
-                        window.location = data.redirect_url;
-                    }
-                },
-                error:function(data){
-                }
-            });
-
-            e.preventDefault();
-        });
-
-        //initialize date picker
-        $('#expiration_date').datepicker({});
-
-        /***
-         * process resume details data
-         */
-        $('#resumeDetails').submit(function(e){
-
-            var formData = $('#resumeDetails').serialize();
-            var formURL = $('#resumeDetails').attr('action');
-
-            //clear errors from view
-            $('.error').html('');
-
-            //ajax process of form login
-            $.ajax({
-                type: "POST",
-                url: formURL,
-                data: formData,
-                beforeSend: function(){
-                     $('.resumeDetails').block({
-                            message: '<h5>Processing... Please wait...</h5>',
-                            css: { border: '1px solid #a00' }
-                     });
-                },
-                success: function(data){
-                    if(data.status == 'FAIL'){
-                        $.each(data.errors,function(key,value){
-                            $('.'+value.key+'_error').html(value.data);
-                        });
-                    }else if(data.status == 'SUCCESS'){
-                        //redirect user on successful login
-                        $("#resume_success_msg").css({ display: "block" });
-                    }
-                    $('.resumeDetails').unblock();
-                },
-                error:function(data){
-                    $('.resumeDetails').unblock();
-                }
-            });
-
-            e.preventDefault();
-        });
-
-
-        /***
-         * process resume education
-         */
-        $('#employeeEducation').submit(function(e){
-
-            var formData = $('#employeeEducation').serialize();
-            var formURL = $('#employeeEducation').attr('action');
-
-            //clear errors from view
-            $('.error').html('');
-
-            //ajax process of form login
-            $.ajax({
-                type: "POST",
-                url: formURL,
-                data: formData,
-                beforeSend: function(){
-                    $('.employeeEducation').block({
-                        message: '<h5>Processing... Please wait...</h5>',
-                        css: { border: '1px solid #a00' }
-                    });
-                },
-                success: function(data){
-                    if(data.status == 'FAIL'){
-                        $.each(data.errors,function(key,value){
-                            $('.'+value.key+'_error').html(value.data);
-                        });
-                    }else if(data.status == 'SUCCESS'){
-                        //redirect user on successful login
-                        $("#edu_success_msg").css({ display: "block" });
-                    }
-                    $('.employeeEducation').unblock();
-                },
-                error:function(data){
-                    $('.employeeEducation').unblock();
-                }
-            });
-
-            e.preventDefault();
-        });
-
-
-        /***
-         * process resume experience
-         */
-        $('#employeeExperience').submit(function(e){
-
-            var formData = $('#employeeExperience').serialize();
-            var formURL = $('#employeeExperience').attr('action');
-
-            //clear errors from view
-            $('.error').html('');
-
-            //ajax process of form login
-            $.ajax({
-                type: "POST",
-                url: formURL,
-                data: formData,
-                beforeSend: function(){
-                    $('.employeeExperience').block({
-                        message: '<h5>Processing... Please wait...</h5>',
-                        css: { border: '1px solid #a00' }
-                    });
-                },
-                success: function(data){
-                    if(data.status == 'FAIL'){
-                        $.each(data.errors,function(key,value){
-                            $('.'+value.key+'_error').html(value.data);
-                        });
-                    }else if(data.status == 'SUCCESS'){
-                        //redirect user on successful login
-                        $("#exp_success_msg").css({ display: "block" });
-                    }
-                    $('.employeeExperience').unblock();
-                },
-                error:function(data){
-                    $('.employeeExperience').unblock();
-                }
-            });
-
-            e.preventDefault();
-        });
-    });
-</script>
 </body>
 </html>

@@ -41,6 +41,8 @@ class Job_model extends CI_Model
         return $insert_id;
     }
 
+
+
     /***
      * Get job by id
      * @param $job_id
@@ -173,5 +175,20 @@ class Job_model extends CI_Model
                   " SET applied_count = applied_count + 1
                   WHERE `id` = " . intval($job_id);
         $this->db->query($query);
+    }
+
+    /***
+     * Delete job by job id
+     * @param $job_id
+     */
+    public function delete($job_id){
+        //delete job from database
+        $this->db->where('id',$job_id);
+        $this->db->delete($this::TABLE_NAME);
+
+        //delete associated applications
+        $table_name = "job_application";
+        $this->db->where('job_id',$job_id);
+        $this->db->delete($table_name);
     }
 }

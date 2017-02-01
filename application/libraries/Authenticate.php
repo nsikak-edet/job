@@ -19,25 +19,29 @@ class Authenticate
      * Check if session is valid
      * @return bool
      */
-    public function is_valid_session(){
-        $session_token = $this->CI->session->userdata('token');
-        if($session_token != null){
+    public function is_permitted_user($permitted_users){
+        $user = $this->CI->session->userdata('user');
+        if($user != null){
+            foreach($permitted_users as $user_group){
+                if(intval($user->user_group) == intval($user_group)){
+                    return true;
+                }
 
-            $sess_user_id = $this->CI->session->userdata('id');
-            $sess_user_pass = $this->CI->session->userdata('password');
-
-            $token_data = array('id'=>$sess_user_id,'password'=>$sess_user_pass);
-
-            if($sess_user_id != null && $sess_user_pass != null){
-                    $thistoken = get_login_token($token_data);
-
-                    if($thistoken == $session_token)
-                        return true;
             }
 
         }
 
         return false;
+    }
+
+    /***
+     * @param $permitted_users
+     */
+    public function permit_valid_user($permitted_users){
+        $is_permitted = $this->is_permitted_user($permitted_users);
+        if($is_permitted == false){
+            $this->logout();
+        }
     }
 
 

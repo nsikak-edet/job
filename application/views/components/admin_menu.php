@@ -3,11 +3,12 @@
         <nav id="primary-menu">
             <ul class="main-menu text-right">
                 <li><a href="<?php echo base_url(); ?>">Home</a></li>
-                <li><a href="<?php echo base_url() ?>employee/"><i class="fa fa-level-down text-left"></i> My Account </a>
+                <li><a href="<?php echo base_url() ?>admin/jobs"><i class="fa fa-level-down text-left"></i> Admin </a>
                     <ul class="dropdown">
-                        <li><a href="<?php echo base_url() ?>employee/"><i class="fa fa-th-large text-left"></i>Dashboard</a></li>
-                        <li><a href="<?php echo base_url() ?>employee/resume"><i class="fa fa-file-text text-left"></i>Resume</a></li>
-                        <li><a href="<?php echo base_url() ?>employee/applications"><i class="fa fa-files-o text-left"></i>Applications</a></li>
+                        <li><a href="<?php echo base_url() ?>admin/recruiters"><i class="fa fa-users text-left"></i>Recruiters</a></li>
+                        <li><a href="<?php echo base_url() ?>admin/employees"><i class="fa fa-users text-left"></i>Employees</a></li>
+                        <li><a href="<?php echo base_url() ?>admin/jobs"><i class="fa fa-bullhorn text-left"></i>Job Adverts</a></li>
+
                         <li ><a href="<?php echo base_url() ?>account/logout"><i class="fa fa-power-off text-left"></i>Logout</a></li>
 
 <!--                <li class="mega-parent"><a href="#">Shortcode</a>-->
@@ -22,7 +23,7 @@
 <!--                        </ul>-->
 <!--                        <ul class="single-mega-item">-->
 <!--                            <li class="block">Shortcode List</li>-->
-<!--                           <li><a href="shortcode-contact-form.html" target="_blank">Contact Form</a></li>-->
+<!--                            <li><a href="shortcode-contact-form.html" target="_blank">Contact Form</a></li>-->
 <!--                            <li><a href="shortcode-map.html" target="_blank">Map</a></li>-->
 <!--                            <li><a href="shortcode-fun-facts.html" target="_blank">Fun Facts</a></li>-->
 <!--                            <li><a href="image-gallery.html" target="_blank">Image Gallery</a></li>-->
