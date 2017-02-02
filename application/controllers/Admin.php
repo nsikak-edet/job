@@ -9,12 +9,15 @@ class Admin extends CI_Controller{
 
     public function __construct(){
         parent::__construct();
+        $this->authenticate->permit_valid_user(get_permission('A'));
     }
 
     /***
      * Admin dashboard
      */
     public function index(){
+
+
         $data['page_title'] = "Admin";
         $data['sub_page_title'] = "Dashboard";
 

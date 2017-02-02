@@ -75,6 +75,7 @@ class Account extends CI_Controller {
 						'pass' => 'Invalid username or password'
 					));
 					outputJSON($errorJSON);
+
 				}
 			}
 

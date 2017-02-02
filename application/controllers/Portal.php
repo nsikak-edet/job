@@ -142,6 +142,7 @@ class Portal extends CI_Controller {
 	 * @param $user_id
 	 */
 	public function activate($user_id){
+		$this->authenticate->permit_valid_user(get_permission('A'));
 		$this->load->model('job_model');
 		$activate = $this->input->get('a',TRUE);
 
@@ -166,6 +167,7 @@ class Portal extends CI_Controller {
 	 * @param $job_id
 	 */
 	public function del($job_id){
+		$this->authenticate->permit_valid_user(get_permission('A'));
 		$this->load->model('job_model');
 		$this->job_model->delete($job_id);
 

@@ -17,6 +17,9 @@ class Employee extends CI_Controller
      * Employee dashboard
      */
     public function index(){
+
+        $this->authenticate->permit_valid_user(get_permission('E'));
+
         $data['page_title'] = "Employee";
         $data['sub_page_title'] = "Dashboard";
 
@@ -32,6 +35,8 @@ class Employee extends CI_Controller
      */
     public function view($user_id = 0){
 
+        $this->authenticate->permit_valid_user(get_permission('AER'));
+
         $data['page_title'] = "Employee";
         $data['sub_page_title'] = "Dashboard";
 
@@ -46,6 +51,7 @@ class Employee extends CI_Controller
     }
 
     public function applications(){
+        $this->authenticate->permit_valid_user(get_permission('E'));
         $data['page_title'] = "Employee";
         $data['sub_page_title'] = "Applications";
         $user = $this->session->userdata('user');
@@ -60,6 +66,7 @@ class Employee extends CI_Controller
      * @param $user_id
      */
     public function del($user_id){
+        $this->authenticate->permit_valid_user(get_permission('A'));
         $this->load->model('resume_model');
         $this->load->model('job_application_model');
         $this->load->model('user_model');
@@ -77,6 +84,7 @@ class Employee extends CI_Controller
      * @param $user_id
      */
     public function activate($user_id){
+        $this->authenticate->permit_valid_user(get_permission('A'));
         $this->load->model('user_model');
         $activate = $this->input->get('a',TRUE);
 
@@ -133,6 +141,8 @@ class Employee extends CI_Controller
 
     public function resume(){
 
+        $this->authenticate->permit_valid_user(get_permission('E'));
+
         $user = $this->session->userdata('user');
 
         $data['page_title'] = "Employee";
@@ -159,7 +169,7 @@ class Employee extends CI_Controller
      * Upload passport
      */
     public function upload_passport(){
-
+        $this->authenticate->permit_valid_user(get_permission('E'));
         $user = $this->session->userdata('user');
 
         /***
@@ -181,6 +191,7 @@ class Employee extends CI_Controller
     }
 
     public function save_details(){
+        $this->authenticate->permit_valid_user(get_permission('E'));
         $user = $this->session->userdata('user');
 
         //check if employee details is submitted
@@ -244,6 +255,7 @@ class Employee extends CI_Controller
     }
 
     public function save_education(){
+        $this->authenticate->permit_valid_user(get_permission('E'));
         $user = $this->session->userdata('user');
 
         //check if employee education is submitted
@@ -299,6 +311,7 @@ class Employee extends CI_Controller
     }
 
     public function save_experience(){
+        $this->authenticate->permit_valid_user(get_permission('E'));
         $user = $this->session->userdata('user');
 
         //check if employee experience is submitted

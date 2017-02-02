@@ -15,6 +15,7 @@ class Recruiter extends CI_Controller{
      * Recruiters dashboard
      */
     public function index(){
+        $this->authenticate->permit_valid_user(get_permission('AR'));
         $user_id = $this->input->get('uid',TRUE);
 
 
@@ -31,6 +32,7 @@ class Recruiter extends CI_Controller{
     }
 
     public function candidates($job_id=0){
+        $this->authenticate->permit_valid_user(get_permission('AR'));
         $data['page_title'] = "Recruiter";
         $data['sub_page_title'] = "candidates";
 
@@ -141,6 +143,7 @@ class Recruiter extends CI_Controller{
      *View recruiter's details
      */
     public function profile($user_id=0){
+        $this->authenticate->permit_valid_user(get_permission('AR'));
         $data['page_title'] = "Recruiter";
         $data['sub_page_title'] = "Profile";
 
@@ -159,6 +162,7 @@ class Recruiter extends CI_Controller{
      * Edit profile request handler
      */
     public function edit_profile(){
+        $this->authenticate->permit_valid_user(get_permission('AR'));
         $user = $this->session->userdata('user');
 
         //load company types model
@@ -217,6 +221,7 @@ class Recruiter extends CI_Controller{
      * Add new job advert process handler
      */
     public function add_job(){
+        $this->authenticate->permit_valid_user(get_permission('R'));
 
         $data['page_title'] = "Recruiter";
         $data['sub_page_title'] = "Add job";
@@ -309,8 +314,6 @@ class Recruiter extends CI_Controller{
                 return;
             }
         }
-
-
         $this->template->load("board_default","recruiter/register_job",@$data);
     }
 
@@ -319,6 +322,7 @@ class Recruiter extends CI_Controller{
      */
     public function edit_job($job_id){
 
+        $this->authenticate->permit_valid_user(get_permission('AR'));
         $data['page_title'] = "Recruiter";
         $data['sub_page_title'] = "Edit job";
 
@@ -419,6 +423,7 @@ class Recruiter extends CI_Controller{
      * @param $user_id
      */
     public function activate($user_id){
+        $this->authenticate->permit_valid_user(get_permission('A'));
         $this->load->model('user_model');
         $activate = $this->input->get('a',TRUE);
 
@@ -437,6 +442,7 @@ class Recruiter extends CI_Controller{
      * @param $user_id
      */
     public function del($user_id){
+        $this->authenticate->permit_valid_user(get_permission('A'));
         $this->load->model('recruiter_model');
         $this->load->model('job_model');
         $this->load->model('user_model');
