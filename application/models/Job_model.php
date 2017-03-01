@@ -75,6 +75,7 @@ class Job_model extends CI_Model
         $this->db->join('job_types','job_types.id=jobs.job_type');
         $this->db->join('job_category','job_category.id=jobs.job_category');
         $this->db->join('job_location','job_location.id=jobs.job_location');
+        $this->db->where('is_active',1);
         $this->db->order_by('jobs.id','desc');
         $this->db->limit(10);
 
@@ -94,6 +95,11 @@ class Job_model extends CI_Model
         $this->db->join('job_location','job_location.id=jobs.job_location');
         $this->db->order_by('jobs.id','desc');
         $this->db->limit($start,$offset);
+
+        $user = $this->session->userdata('user');
+        if($user != null && $user->user_group != ADMIN_GROUP){
+            $this->db->where('is_active',1);
+        }
 
         if($keyword != '')
             $this->db->like('jobs.title',$keyword);
@@ -119,6 +125,11 @@ class Job_model extends CI_Model
         $this->db->join('job_category','job_category.id=jobs.job_category');
         $this->db->join('job_location','job_location.id=jobs.job_location');
         $this->db->order_by('jobs.id','desc');
+
+        $user = $this->session->userdata('user');
+        if($user != null && $user->user_group != ADMIN_GROUP){
+            $this->db->where('is_active',1);
+        }
 
         if($keyword != '')
             $this->db->like('jobs.title',$keyword);
